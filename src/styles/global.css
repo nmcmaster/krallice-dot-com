@@ -1,11 +1,20 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: "Cloister Black";
+    src: url("./CloisterBlack.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 @theme {
     --font-display:
         "Cormorant Garamond", "EB Garamond", Garamond, Georgia, serif;
     --font-sans:
         ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-blackletter: "Cloister Black", "UnifrakturMaguntia", serif;
 }
 
 html,
@@ -18,4 +27,85 @@ body {
     background-repeat: repeat-y;
     background-size: 100% auto;
     background-position: top center;
+}
+
+/* Personal-memories prose — the core reading experience of an album page */
+.memories {
+    color: #d6d3d1;
+    line-height: 1.85;
+    font-size: 1.075rem;
+}
+.memories > * + * {
+    margin-top: 1.4em;
+}
+.memories h2,
+.memories h3 {
+    font-family: var(--font-display);
+    color: #f5f5f4;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+.memories h2 {
+    font-size: 1.9rem;
+    margin-top: 2.2em;
+}
+.memories h3 {
+    font-size: 1.45rem;
+    margin-top: 1.8em;
+}
+.memories a {
+    color: #f5f5f4;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #57534e;
+}
+.memories a:hover {
+    text-decoration-color: #e7e5e4;
+}
+.memories blockquote {
+    border-left: 2px solid #44403c;
+    padding-left: 1.25rem;
+    font-style: italic;
+    color: #a8a29e;
+}
+.memories em {
+    font-style: italic;
+}
+.memories strong {
+    color: #f5f5f4;
+    font-weight: 600;
+}
+.memories hr {
+    border: 0;
+    border-top: 1px solid #292524;
+    margin: 2.5em 0;
+}
+.memories ul,
+.memories ol {
+    padding-left: 1.4rem;
+}
+.memories ul {
+    list-style: disc;
+}
+.memories ol {
+    list-style: decimal;
+}
+.memories li + li {
+    margin-top: 0.4em;
+}
+
+/* Atmospheric drop cap on the opening paragraph */
+.memories > p:first-of-type::first-letter {
+    font-family: var(--font-blackletter);
+    font-size: 3.4em;
+    line-height: 0.78;
+    float: left;
+    padding-right: 0.12em;
+    color: #f5f5f4;
+}
+
+/* Embedded Bandcamp / Ampwall players injected via set:html */
+.embed iframe {
+    max-width: 100%;
+    display: block;
 }

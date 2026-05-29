@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSortedAlbums } from '../../data/albums';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const albums = await getSortedAlbums();
+  return albums.map((album, i) => ({
+    params: { slug: album.id },
+    props: {
+      album,
+      prev: albums[i - 1] ?? null,
+      next: albums[i + 1] ?? null,
+    },
+  }));
+}
+
+const { album, prev, next } = Astro.props;
+const { Content } = await render(album);
+const year = album.data.releaseDate.getUTCFullYear();
+const dev = import.meta.env.DEV;
+---
+
+<BaseLayout
+  title={`Krallice — ${album.data.title}`}
+  description={`Krallice — ${album.data.title} (${year}).`}
+>
+  <main class="mx-auto max-w-3xl px-6 py-10 md:py-14">
+    <header class="flex flex-col items-center text-center">
+      <div class="aspect-square w-full max-w-xs overflow-hidden border border-stone-800 bg-stone-950 shadow-[0_0_40px_rgba(0,0,0,0.6)] md:max-w-sm">
+        {album.data.coverArt ? (
+          <img src={album.data.coverArt} alt={album.data.title} class="h-full w-full object-cover" />
+        ) : (
+          <div class="flex h-full w-full items-center justify-center p-4 text-center font-display text-stone-400">
+            {album.data.title}
+          </div>
+        )}
+      </div>
+      <h1 class="mt-8 font-display text-4xl uppercase tracking-[0.18em] text-stone-100 md:text-5xl">
+        {album.data.title}
+      </h1>
+      <p class="mt-3 font-mono text-sm uppercase tracking-[0.4em] tabular-nums text-stone-500">
+        {year}
+      </p>
+    </header>
+
+    {(album.data.bandcampEmbed || dev) && (
+      <section class="mt-12">
+        <h2 class="mb-3 text-[0.7rem] uppercase tracking-[0.3em] text-stone-500">Bandcamp</h2>
+        {album.data.bandcampEmbed ? (
+          <div class="embed" set:html={album.data.bandcampEmbed} />
+        ) : (
+          <div class="flex h-24 items-center justify-center border border-dashed border-stone-700 text-center text-xs uppercase tracking-widest text-stone-600">
+            Add bandcampEmbed in frontmatter
+          </div>
+        )}
+      </section>
+    )}
+
+    {(album.data.ampwallEmbed || dev) && (
+      <section class="mt-8">
+        <h2 class="mb-3 text-[0.7rem] uppercase tracking-[0.3em] text-stone-500">Ampwall</h2>
+        {album.data.ampwallEmbed ? (
+          <div class="embed" set:html={album.data.ampwallEmbed} />
+        ) : (
+          <div class="flex h-24 items-center justify-center border border-dashed border-stone-700 text-center text-xs uppercase tracking-widest text-stone-600">
+            Add ampwallEmbed in frontmatter
+          </div>
+        )}
+      </section>
+    )}
+
+    {album.data.tracks.length > 0 && (
+      <section class="mt-12">
+        <h2 class="mb-4 text-[0.7rem] uppercase tracking-[0.3em] text-stone-500">Tracklist</h2>
+        <ol class="divide-y divide-stone-800/70 border-y border-stone-800/70">
+          {album.data.tracks.map((t, i) => (
+            <li class="flex items-baseline gap-4 py-3">
+              <span class="font-mono text-xs tabular-nums text-stone-600">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="text-stone-200">{t}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {album.data.engineering && (
+      <section class="mt-12 border border-stone-800/70 bg-black/30 p-6">
+        <h2 class="mb-3 text-[0.7rem] uppercase tracking-[0.3em] text-stone-500">
+          Recording &amp; Engineering
+        </h2>
+        <div class="space-y-3 text-sm leading-relaxed text-stone-400">
+          {album.data.engineering.split(/\n\n+/).map((p) => <p>{p}</p>)}
+        </div>
+      </section>
+    )}
+
+    <article class="memories mt-16">
+      <Content />
+    </article>
+
+    <nav class="mt-20 grid grid-cols-1 gap-4 border-t border-stone-800/70 pt-10 sm:grid-cols-2">
+      {prev ? (
+        <a
+          href={`/albums/${prev.id}`}
+          class="group block border border-stone-800 p-5 transition-colors hover:border-stone-600"
+        >
+          <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-600">Previous</span>
+          <span class="mt-1 block font-display text-lg text-stone-300 group-hover:text-stone-100">
+            ← {prev.data.title}
+          </span>
+        </a>
+      ) : (
+        <div class="hidden sm:block"></div>
+      )}
+
+      {next ? (
+        <a
+          href={`/albums/${next.id}`}
+          class="group block border border-stone-700 bg-black/30 p-5 text-right transition-colors hover:border-stone-400"
+        >
+          <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-500">Next chapter</span>
+          <span class="mt-1 block font-display text-xl text-stone-100">
+            {next.data.title} →
+          </span>
+        </a>
+      ) : (
+        <a
+          href="/discography"
+          class="group block border border-stone-700 bg-black/30 p-5 text-right transition-colors hover:border-stone-400"
+        >
+          <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-500">The end — for now</span>
+          <span class="mt-1 block font-display text-xl text-stone-100">
+            Back to discography →
+          </span>
+        </a>
+      )}
+    </nav>
+  </main>
+</BaseLayout>

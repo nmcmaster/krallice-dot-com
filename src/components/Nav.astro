@@ -1,0 +1,37 @@
+---
+const links = [
+  { label: 'Discography', href: '/discography' },
+  { label: 'About', href: '/about' },
+  { label: 'Tablatures', href: '/tablatures' },
+  { label: 'Tour', href: 'https://krallicetour.com', external: true },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<nav class="relative z-40 border-b border-stone-800/70 bg-black/40 backdrop-blur-sm">
+  <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4">
+    <a
+      href="/"
+      class="font-display text-sm uppercase tracking-[0.4em] text-stone-200 transition-colors hover:text-white"
+    >
+      Krallice
+    </a>
+    <ul class="flex flex-wrap items-center gap-x-5 gap-y-1 sm:gap-x-8">
+      {links.map((l) => (
+        <li>
+          <a
+            href={l.href}
+            {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            class:list={[
+              'text-[0.7rem] uppercase tracking-[0.25em] transition-colors',
+              path === l.href ? 'text-stone-100' : 'text-stone-400 hover:text-stone-100',
+            ]}
+          >
+            {l.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>

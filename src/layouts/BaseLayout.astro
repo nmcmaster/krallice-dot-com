@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Nav from '../components/Nav.astro';
 
 interface Props {
   title?: string;
@@ -7,11 +8,12 @@ interface Props {
 }
 
 const {
-  title = 'Krallice — European Tour 2026',
-  description = 'Krallice on tour in Europe, October–November 2026. Dates and tickets.',
+  title = 'Krallice',
+  description = 'Krallice — discography, tablatures, and the story behind the records.',
 } = Astro.props;
 
-const ogImage = new URL('/krallicelogo.png', Astro.site ?? 'https://krallicetour.com').toString();
+const site = Astro.site ?? new URL('https://krallice.com');
+const ogImage = new URL('/krallicelogo.png', site).toString();
 ---
 
 <!doctype html>
@@ -31,6 +33,9 @@ const ogImage = new URL('/krallicelogo.png', Astro.site ?? 'https://krallicetour
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body class="min-h-screen font-sans text-stone-100 antialiased">
-    <slot />
+    <div class="min-h-screen bg-black/65">
+      <Nav />
+      <slot />
+    </div>
   </body>
 </html>
