@@ -10,7 +10,7 @@ const albums = defineCollection({
     tracks: z.array(z.string()).default([]),
     engineering: z.string().optional(),
     bandcampEmbed: z.string().optional(),
-    ampwallEmbed: z.string().optional(),
+    ampwallUrl: z.string().url().optional(),
   }),
 });
 

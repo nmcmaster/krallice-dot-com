@@ -1,7 +1,7 @@
 ---
 title: "Krallice"
 releaseDate: 2008-08-19   # PLACEHOLDER — verify the real release date
-coverArt: "/albums/2008-krallice.svg"   # PLACEHOLDER art — drop the real cover into public/albums/ and point this at it
+coverArt: "/albums/2008-krallice.svg"   # PLACEHOLDER art — drop the real cover into public/albums/ and point this at it. Used for the header art, the discography grid, AND the page's blurred ambient backdrop.
 tracks:
   # PLACEHOLDER tracklist — replace with the real track titles
   - "First Track Title"
@@ -14,9 +14,10 @@ engineering: |
   worth documenting.
 
   Separate paragraphs with a blank line.
-# Paste real embed snippets from each service to light up the players. Example shape:
+# Paste the real Bandcamp embed snippet to light up the player (sits above the memoir):
 # bandcampEmbed: '<iframe style="border:0;width:100%;height:472px;" src="https://bandcamp.com/EmbeddedPlayer/album=XXXXXXXXX/size=large/..." seamless></iframe>'
-# ampwallEmbed: '<iframe src="https://ampwall.com/embed/..." width="100%" height="..."></iframe>'
+# Ampwall is just a link below the player, not an embed:
+# ampwallUrl: "https://ampwall.com/a/krallice"
 ---
 
 <!-- PLACEHOLDER: this is the heart of the page — your personal memories of the album.

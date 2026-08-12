@@ -1,19 +1,32 @@
 ---
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/eb-garamond/400.css';
+import '@fontsource/eb-garamond/400-italic.css';
+import '@fontsource/eb-garamond/600.css';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Image for the fixed page backdrop. Defaults to the site poster;
+      album pages pass their cover art, which renders blurred + darkened. */
+  backdrop?: string;
 }
 
 const {
   title = 'Krallice',
   description = 'Krallice — discography, tablatures, and the story behind the records.',
+  backdrop,
 } = Astro.props;
 
+const backdropImage = backdrop ?? '/krallicetour_final.webp';
+const ambient = Boolean(backdrop);
+
 const site = Astro.site ?? new URL('https://krallice.com');
-const ogImage = new URL('/krallicelogo.png', site).toString();
+const ogImage = new URL('/og.png', site).toString();
 ---
 
 <!doctype html>
@@ -33,6 +46,16 @@ const ogImage = new URL('/krallicelogo.png', site).toString();
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body class="min-h-screen font-sans text-stone-100 antialiased">
+    <div aria-hidden="true" class="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class:list={[
+          'absolute inset-0 bg-cover',
+          ambient ? 'bg-center scale-110 opacity-35 blur-3xl' : 'bg-top',
+        ]}
+        style={`background-image: url('${backdropImage}')`}
+      >
+      </div>
+    </div>
     <div class="min-h-screen bg-black/65">
       <Nav />
       <slot />

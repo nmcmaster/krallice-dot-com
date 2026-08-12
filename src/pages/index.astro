@@ -10,14 +10,14 @@ const beginHref = first ? `/albums/${first.id}` : '/discography';
 <BaseLayout>
   <main class="mx-auto flex min-h-[80vh] max-w-3xl flex-col items-center justify-center px-6 text-center">
     <img
-      src="/krallicelogo.png"
+      src="/logo_white.png"
       alt="Krallice"
       class="w-full max-w-xs md:max-w-md drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]"
     />
 
     <a
       href={beginHref}
-      class="mt-14 inline-block font-blackletter text-7xl leading-none text-stone-100 transition-colors hover:text-white md:mt-20 md:text-8xl lg:text-9xl"
+      class="mt-14 inline-block font-blackletter text-7xl leading-none text-stone-100 transition duration-300 hover:text-white hover:drop-shadow-[0_0_28px_rgba(245,245,244,0.4)] focus-visible:text-white focus-visible:drop-shadow-[0_0_28px_rgba(245,245,244,0.4)] md:mt-20 md:text-8xl lg:text-9xl"
     >
       Begin
     </a>

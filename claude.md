@@ -1,92 +1,138 @@
-# Handoff for the next Claude
+# krallice.com
 
-You're inheriting a copy of the `krallicetour-astro` project, which the user is reshaping into **krallice.com** — the band's general site. The original codebase shipped a single tour-announcement page on 2026-05-26.
+Band site for Krallice. The user is Nicholas McMaster, bassist of the band — the
+"personal memories" on album pages are his own writing; never fabricate band facts.
+
+## The concept
+
+The site is the band's story told through its records, **in chronological order**.
+The homepage is a single word — "Begin" in blackletter — that drops you into the
+first album. Each album page is a chapter: art, tracklist, a Bandcamp player you
+start *before* reading, then a long-form personal memoir. Prev/next footers walk
+the discography like chapters of a book. The memoir prose is the heart of every
+page; everything else is supporting material.
 
 ## Stack
 
-- Astro 6.3 (static output, no SSR)
-- Tailwind CSS 4.3 (via `@tailwindcss/vite`)
-- TypeScript
-- `@astrojs/netlify` adapter — deployed to Netlify
-- Node 22+
-- **No JS frameworks.** Vanilla TS in Astro `<script>` blocks. Don't add React/Vue/Svelte unless the user explicitly asks.
+- Astro 6.3, static output, `@astrojs/netlify`, deployed to Netlify
+- Tailwind CSS 4.3 via `@tailwindcss/vite`
+- TypeScript, Node 22+
+- **No JS frameworks.** Vanilla TS in Astro `<script>` blocks only.
 
-## Project structure
+## Structure
 
 ```
 src/
-  pages/        Astro file-based routing
-  layouts/      BaseLayout.astro (shared shell)
-  components/   LoopPlayer.astro (see below)
-  data/         tour.ts parses ../../data/links.csv via Vite ?raw
-  styles/       global.css (Tailwind directives + minimal customs)
-public/         Static assets served as-is
-  loops/        Audio + manifest.json for the loop player
-data/           Source-of-truth CSVs (links.csv = tour dates)
+  pages/            index (Begin), discography, about, tablatures, albums/[slug]
+  layouts/          BaseLayout.astro — head, nav, fixed backdrop layer
+  components/       Nav.astro
+  content/albums/   One markdown file per album — THE content organization
+  data/albums.ts    getSortedAlbums(): albums oldest-first (canonical order)
+  styles/           global.css (@theme fonts, .memories prose), CloisterBlack.ttf
+public/
+  albums/           Cover art files
+  og.png            1200×630 social card (white sigil on #050505)
+  krallicetour_final.webp   Tour poster — default site backdrop (1080×2772)
 ```
 
-## Things to preserve as-is
+## Adding an album (the one-by-one workflow)
 
-### LoopPlayer (`src/components/LoopPlayer.astro`)
-A fixed bottom-center audio player built from scratch. The user is happy with it — **don't redesign or refactor it without being asked.** Key facts:
+1. Drop the cover into `public/albums/`.
+2. Create `src/content/albums/<year>-<slug>.md`. Frontmatter schema
+   (`src/content.config.ts`): `title`, `releaseDate`, `coverArt`, `tracks[]`,
+   `engineering` (multi-paragraph string), `bandcampEmbed` (full iframe HTML),
+   `ampwallUrl` (plain URL — rendered as a link, not an embed).
+3. Write the memoir in the markdown body. `2008-krallice.md` is the annotated
+   template (currently all placeholder content).
 
-- Reads `public/loops/manifest.json` (`[{title, file}]`)
-- Renders nothing if the manifest is empty or missing
-- Plays each track once, auto-advances on `ended`, wraps the playlist
-- Pulses the play button until first user interaction (browser autoplay policy)
-- Long titles get a slide-pause-fade-reset marquee via Web Animations API (no continuous scroll, no backward scroll)
-- Tunable knobs at the top of `renderTitle` in the script block: `speed` (px/sec), `pauseSec`, `fadeSec`
-- Audio is `preload="metadata"` — only metadata fetched until user clicks play
+**`coverArt` is a single source of truth**: it drives the album-page header art,
+the discography grid tile, AND that page's ambient backdrop. Never add a second
+art field.
 
-To add a track on the new site: drop the file into `public/loops/<subdir>/` and add an entry to `public/loops/manifest.json`. No rebuild needed beyond what Astro does on file change.
+Chapter numbers (the roman numerals under album titles) come from position in
+`getSortedAlbums()` — nothing to set manually.
 
-### CSV-driven content pattern
-`src/data/tour.ts` imports a CSV with `?raw`, parses it at build time, and exports typed objects. Reuse this pattern for any structured content (releases, members, etc.) before reaching for a CMS.
+## The backdrop system (BaseLayout.astro)
 
-### Visual language
-Dark, atmospheric, stone-colored. `font-display` for headers, uppercase + wide letter-spacing for labels (`tracking-[0.3em]` to `tracking-[0.5em]`), monospace tabular nums for dates. Background image with semi-opaque dark overlay. See `src/pages/index.astro` and `src/layouts/BaseLayout.astro`.
+Backgrounds are a **fixed, viewport-sized layer** (`fixed inset-0 -z-10`,
+`bg-cover`), NOT a body background. The image paints exactly once and content
+scrolls over it — no tiling/seams on long pages, and it works on iOS where
+`background-attachment: fixed` doesn't.
+
+- Default (`backdrop` prop unset): the tour poster, sharp, `bg-top` (it's a very
+  tall image; top-aligned shows the artwork, center would show a middle slice).
+- Album pages pass `backdrop={album.data.coverArt}` → "ambient" mode:
+  `bg-center scale-110 opacity-35 blur-3xl`. The heavy blur extracts the
+  record's palette as atmosphere rather than showing the image, and it also
+  masks pixelation from low-res cover art at any viewport size. `scale-110`
+  hides the blur's soft edges.
+- The `bg-black/65` wrapper in BaseLayout darkens everything for text contrast.
+- Tint strength knobs (opacity/blur) live on that one div in BaseLayout.
+
+**Paint-order gotcha (caused a real bug):** the backdrop layer has negative
+z-index, and an in-flow element's own background paints *over* negative-z
+descendants. So `background-color` may live on `html` only — putting it on
+`body` (or any full-size wrapper) silently hides the backdrop.
+
+## Typography
+
+Three faces, all self-hosted (Fontsource packages imported in BaseLayout, plus
+CloisterBlack.ttf via `@font-face`):
+
+- `font-display` — **Cormorant Garamond** (400/500/600): page + album titles.
+  Set mixed-case, `font-medium`, large (`text-5xl md:text-6xl`). Display face
+  only — too delicate for body text.
+- `font-serif` — **EB Garamond** (400/400-italic/600): all reading material —
+  `.memories` prose (1.175rem/1.8), tracklist song titles, engineering notes.
+- `font-blackletter` — **Cloister Black**: "Begin" on the homepage and the
+  drop cap opening each memoir. The site's signature; use sparingly, don't
+  spread it.
+
+The deliberate contrast: bookish serif for titles and reading material vs.
+utilitarian chrome (uppercase tracked sans labels, tabular mono numbers/dates).
+Keep new UI in the chrome register, new content in serif.
+
+## Album page anatomy (order matters — it was chosen deliberately)
+
+1. Cover art + tracklist side-by-side (`items-center`; stacks on mobile).
+   Tracklist has no heading — the numbered list is self-evident.
+2. Title + chapter marker ("II · 2009", centered).
+3. Bandcamp embed — above the memoir so people listen while they read, with a
+   right-aligned "Also on Ampwall →" link beneath it (new tab, so the player
+   isn't killed).
+4. The memoir (`.memories`).
+5. Engineering notes.
+6. Prev / next chapter footer.
+
+Known trade-off: with 8+ tracks the list grows taller than the cover and the
+art floats centered with gaps. If a real record makes this ugly, options are
+`items-start` or a two-column tracklist — decide when real content exists.
 
 ## Astro gotchas already learned
 
-1. **`<style>` blocks are scoped by default.** Selectors get a `[data-astro-cid-XYZ]` attribute appended. Styles will NOT apply to elements created via `document.createElement` at runtime. `@keyframes` names are also rewritten, breaking JS-assigned `animation` strings. Fix: `<style is:global>`. The LoopPlayer uses this.
+1. `<style>` blocks are scoped; runtime-created elements and JS-assigned
+   `@keyframes` need `<style is:global>`.
+2. Component `<script>` tags become deferred ES modules — no ordering
+   guarantees between components.
+3. Tailwind `hidden` is `display:none` — measure layout only after making the
+   element visible.
+4. The paint-order/backdrop gotcha above.
 
-2. **Component `<script>` tags get bundled as deferred ES modules.** They run after DOMContentLoaded. Don't rely on script order between components.
+## User preferences
 
-3. **Tailwind's `hidden` is `display: none`.** Don't measure layout on hidden elements — `clientWidth`/`scrollWidth` will be 0. Make visible first, then measure (rAF is fine).
+- **Don't start the dev server.** `npm run dev` is already running at
+  `http://localhost:4321`. Verify with curl (or browser tools if connected).
+- Terse responses, no chatty narration, no emojis.
+- No premature abstractions or unrequested refactors.
+- Verify UI changes before declaring them done.
+- Confirm before destructive or shared-state actions (deploys, force-pushes).
 
-## User preferences (carry over)
+## Open / not yet decided
 
-- **Don't start the dev server.** The user keeps `npm run dev` running in a separate terminal at `http://localhost:4321`. Use curl/WebFetch to verify changes.
-- Terse responses, no chatty narration, no emojis unless asked.
-- No premature abstractions, speculative features, or unrequested refactors.
-- For UI work, verify in the browser before declaring complete.
-- Confirm before destructive or shared-state actions (deploys, force-pushes, etc.).
-
-## What krallice.com probably needs that this doesn't have
-
-These are guesses — ask the user, don't assume:
-
-- Multi-page routing (likely `/`, `/tour`, `/music`, `/about`, `/contact`)
-- Discography — could be JSON/CSV-driven, or pulled from Bandcamp
-- News/announcements — Astro content collections (`src/content/`) are a good fit for markdown posts
-- Real navigation (current site has none — just header + list + footer)
-- Social/streaming links section
-
-## Things worth reconsidering for a bigger site
-
-- **Audio file sizes**: current loops are 320 kbps MP3. For multi-page nav where audio might persist, re-encode at 128–160 kbps. If Netlify bandwidth becomes a concern, offload audio to Bunny CDN (~$0.01/GB) or Cloudflare R2 (egress-free) and update manifest `file` values to absolute URLs.
-- **Site-wide LoopPlayer persistence across page nav**: Astro is MPA by default, so each navigation reloads the page and the audio restarts. If the user wants gapless cross-page audio, options are (a) Astro View Transitions with the player in the persistent shell, or (b) move to a single-page-app-ish setup. Don't do this preemptively.
-- **Netlify free tier**: 100 GB/month bandwidth. See the conversation transcript for usage math.
-
-## Where the user keeps your memory
-
-`~/.claude/projects/-Users-nicholasmcmaster-dev-<project-name>/memory/`
-
-This will be a new path for the krallice.com project (based on its directory name), so your memory starts fresh. The current project has one feedback note saved about the dev server.
-
-## First moves on krallice.com
-
-1. Confirm with the user: keep this codebase as the starting point, or start fresh?
-2. If keeping: rename `package.json` `name`, update `astro.config.mjs` site URL, decide what to do with `src/pages/index.astro` (replace or repurpose as `/tour`)
-3. Ask what pages they want first — don't scaffold speculatively
-4. Keep the LoopPlayer and CSV pattern; they're load-bearing
+- All real content: actual discography entries, memoirs, cover art, tracklists,
+  Bandcamp embeds. Only the placeholder 2008 album exists.
+- Tablatures page — hosting format undecided (PDF/Guitar Pro/embedded viewer).
+- About page — placeholder prose.
+- `public/og.png` was generated by compositing `logo_white.png` (alpha-cropped)
+  onto #050505 at 1200×630 with PIL; regenerate the same way if the logo changes.
+- Uncommitted work in progress — ask before committing.

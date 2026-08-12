@@ -25,7 +25,9 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
             {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             class:list={[
               'text-[0.7rem] uppercase tracking-[0.25em] transition-colors',
-              path === l.href ? 'text-stone-100' : 'text-stone-400 hover:text-stone-100',
+              path === l.href
+                ? 'text-stone-100 underline decoration-stone-500 underline-offset-[0.7em]'
+                : 'text-stone-400 hover:text-stone-100',
             ]}
           >
             {l.label}
