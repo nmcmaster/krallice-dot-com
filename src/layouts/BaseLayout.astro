@@ -25,6 +25,7 @@ const {
 const backdropImage = backdrop ?? '/krallicetour_final.webp';
 const ambient = Boolean(backdrop);
 
+
 const site = Astro.site ?? new URL('https://krallice.com');
 const ogImage = new URL('/og.png', site).toString();
 ---
@@ -59,8 +60,13 @@ const ogImage = new URL('/og.png', site).toString();
     <div
       class="min-h-screen"
       style="background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.82) 25%, rgba(0,0,0,0.82) 75%, rgba(0,0,0,0.5))"
+     
     >
-      <Nav />
+  <!-- <div
+      class="min-h-screen"
+       style="background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.55) 6%, rgba(0,0,0,0.66) 12.5%, rgba(0,0,0,0.77) 19%, rgba(0,0,0,0.82) 25%, rgba(0,0,0,0.82) 75%, rgba(0,0,0,0.77) 81%, rgba(0,0,0,0.66) 87.5%, rgba(0,0,0,0.55) 94%, rgba(0,0,0,0.5))">
+   -->
+       <Nav />
       <slot />
     </div>
   </body>

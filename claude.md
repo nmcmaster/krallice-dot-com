@@ -47,7 +47,9 @@ public/
 ## Adding an album (the one-by-one workflow)
 
 1. Drop the cover into `public/albums/`.
-2. Create `src/content/albums/<year>-<slug>.md`. The `<year>-` prefix only
+2. Copy `album-template.md` (project root — annotated with every frontmatter
+   form and the YAML gotchas) to `src/content/albums/<year>-<slug>.md` and
+   fill it in. The `<year>-` prefix only
    keeps files chronologically sorted on disk — URLs drop it via
    `albumSlug()` in `data/albums.ts` (`/albums/<slug>`), so slugs must be
    unique across years. Frontmatter schema
@@ -56,9 +58,9 @@ public/
    and multiple spaces are kept, blank lines split paragraphs — holds
    recording info and assorted credits),
    `lineup` (list of `"Name | instruments"` strings — the pipe is the parse
-   separator, display formatting lives in `[slug].astro`; instruments
-   optional — rendered as one flowing credit paragraph under the engineering
-   text, each member kept unwrapped), `bandcampEmbed` (full iframe HTML),
+   separator, display formatting lives in `[slug].astro`; rendered as one
+   flowing credit paragraph under the engineering text, each member kept
+   unwrapped), `bandcampEmbed` (full iframe HTML),
    `ampwallUrl` (plain URL — rendered as a link, not an embed). A `tracks`
    entry is either a plain title string or
    `{ title, initiated?|written?, lyrics?, lyricsBy? }` — `initiated` and
@@ -102,8 +104,12 @@ div (the scrim's inline gradient).
 - The content wrapper carries the scrim, an inline horizontal gradient:
   `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.82) 25%,
   rgba(0,0,0,0.82) 75%, rgba(0,0,0,0.5))` — darkest (0.82) over the ~48rem
-  reading column, lighter (0.5) at the margins: text contrast where it
-  matters, art visible in the gutters.
+  reading column, lighter (0.5) at the margins. The ramps show mild banding
+  on low-bit-depth external monitors; Nick A/B'd a smoothstep-eased variant
+  and chose to keep the linear one. The eased gradient is preserved in a
+  commented-out div right below the live scrim div — leave that comment in
+  place; it's the starting point if banding is ever revisited. (An
+  feTurbulence dither layer was also tried and rejected: obscured the art.)
 
 **Paint-order gotcha (caused a real bug):** the backdrop layer has negative
 z-index, and an in-flow element's own background paints *over* negative-z

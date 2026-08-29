@@ -107,11 +107,11 @@ tracks:
       initiated: "Marston"
 
 engineering: |
-    PLACEHOLDER — recording and engineering notes go here: where it was tracked,
-    who recorded and mixed it, the guitars / amps / bass rig, anything technical
-    worth documenting.
-
-    Separate paragraphs with a blank line.
+    recorded, mixed, mastered at Menegroth, the Thousand Caves by Colin Marston 6th and 7th month 2009.  Artwork by McMaster.
+lineup: Colin Marston | guitar
+    Mick Barr | guitar, v
+    Nick McMaster | bass, v
+    Lev Weinstein | drums
 
 # Paste the real Bandcamp embed snippet to light up the player (sits above the memoir):
 # bandcampEmbed: '<iframe style="border:0;width:100%;height:472px;" src="https://bandcamp.com/EmbeddedPlayer/album=XXXXXXXXX/size=large/..." seamless></iframe>'

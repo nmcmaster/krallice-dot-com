@@ -159,7 +159,7 @@ const dev = import.meta.env.DEV;
                   {i > 0 && '   '}
                   <span class="whitespace-nowrap">
                     <span class="text-stone-200">{name}</span>
-                    {instruments && <span class="text-stone-500">: {instruments}</span>}
+                    <span class="text-stone-500">: {instruments}</span>
                   </span>
                 </>
               );
@@ -177,9 +177,9 @@ const dev = import.meta.env.DEV;
       {prev ? (
         <a
           href={`/albums/${albumSlug(prev)}`}
-          class="group block border border-stone-800 p-5 transition-colors hover:border-stone-600"
+          class="group block border border-stone-800 px-5 pt-2 pb-4 transition-colors hover:border-stone-600"
         >
-          <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-600">Previous</span>
+          <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-600">Previous Chapter</span>
           <span class="mt-1 block font-display text-lg text-stone-300 group-hover:text-stone-100">
             ← {prev.data.title}
           </span>
@@ -191,9 +191,9 @@ const dev = import.meta.env.DEV;
       {next ? (
         <a
           href={`/albums/${albumSlug(next)}`}
-          class="group block border border-stone-700 bg-black/30 p-5 text-right transition-colors hover:border-stone-400"
+          class="group block border border-stone-700 bg-black/30 px-5 pt-2 pb-4 text-right transition-colors hover:border-stone-400"
         >
-          <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-500">Next chapter</span>
+          <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-500">Next Chapter</span>
           <span class="mt-1 block font-display text-xl text-stone-100">
             {next.data.title} →
           </span>
