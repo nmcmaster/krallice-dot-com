@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getSortedAlbums } from '../data/albums';
+import { albumSlug, getSortedAlbums } from '../data/albums';
 
 const albums = await getSortedAlbums();
 const first = albums[0];
-const beginHref = first ? `/albums/${first.id}` : '/discography';
+const beginHref = first ? `/albums/${albumSlug(first)}` : '/discography';
 ---
 
 <BaseLayout>

@@ -3,6 +3,15 @@
 Band site for Krallice. The user is Nicholas McMaster, bassist of the band — the
 "personal memories" on album pages are his own writing; never fabricate band facts.
 
+**Code is the source of truth for all styling values.** Nick hand-tweaks CSS
+(sizes, spacing, colors, opacities, separators, visibility of elements) between
+sessions. This file records architecture, intent, and gotchas only — if it and
+the code disagree on a value, the code is right and deliberate. Never "restore"
+styling to match this doc. **One exception:** the backdrop/scrim system (see
+that section) is documented with exact values and Nick does NOT hand-tweak it —
+there, doc and code should always match; drift means a bug or an unrecorded
+change worth flagging.
+
 ## The concept
 
 The site is the band's story told through its records, **in chronological order**.
@@ -38,12 +47,28 @@ public/
 ## Adding an album (the one-by-one workflow)
 
 1. Drop the cover into `public/albums/`.
-2. Create `src/content/albums/<year>-<slug>.md`. Frontmatter schema
+2. Create `src/content/albums/<year>-<slug>.md`. The `<year>-` prefix only
+   keeps files chronologically sorted on disk — URLs drop it via
+   `albumSlug()` in `data/albums.ts` (`/albums/<slug>`), so slugs must be
+   unique across years. Frontmatter schema
    (`src/content.config.ts`): `title`, `releaseDate`, `coverArt`, `tracks[]`,
-   `engineering` (multi-paragraph string), `bandcampEmbed` (full iframe HTML),
-   `ampwallUrl` (plain URL — rendered as a link, not an embed).
-3. Write the memoir in the markdown body. `2008-krallice.md` is the annotated
-   template (currently all placeholder content).
+   `engineering` (free-text string rendered whitespace-as-typed: line breaks
+   and multiple spaces are kept, blank lines split paragraphs — holds
+   recording info and assorted credits),
+   `lineup` (list of `"Name | instruments"` strings — the pipe is the parse
+   separator, display formatting lives in `[slug].astro`; instruments
+   optional — rendered as one flowing credit paragraph under the engineering
+   text, each member kept unwrapped), `bandcampEmbed` (full iframe HTML),
+   `ampwallUrl` (plain URL — rendered as a link, not an embed). A `tracks`
+   entry is either a plain title string or
+   `{ title, initiated?|written?, lyrics?, lyricsBy? }` — `initiated` and
+   `written` are mutually exclusive credit fields shown under the title, and
+   the label matches whichever is used ("initiated" is the band's term for
+   the collaborative process; "written" for the conventional case). `lyrics`
+   (multiline string) gets a Lyrics link opening a native `<dialog>` popup;
+   `lyricsBy` is the lyrics credit shown in that popup's header.
+3. Write the memoir in the markdown body. `2008-krallice.md` has annotated
+   comments showing every frontmatter form.
 
 **`coverArt` is a single source of truth**: it drives the album-page header art,
 the discography grid tile, AND that page's ambient backdrop. Never add a second
@@ -61,13 +86,24 @@ scrolls over it — no tiling/seams on long pages, and it works on iOS where
 
 - Default (`backdrop` prop unset): the tour poster, sharp, `bg-top` (it's a very
   tall image; top-aligned shows the artwork, center would show a middle slice).
+**Exception to "code is source of truth": this section is exact and Nick does
+not hand-tweak it.** All values live on two divs in BaseLayout's body: the
+backdrop image div (the art's filter/opacity classes) and the content wrapper
+div (the scrim's inline gradient).
+
 - Album pages pass `backdrop={album.data.coverArt}` → "ambient" mode:
-  `bg-center scale-110 opacity-35 blur-3xl`. The heavy blur extracts the
-  record's palette as atmosphere rather than showing the image, and it also
-  masks pixelation from low-res cover art at any viewport size. `scale-110`
+  `bg-center scale-110 opacity-70 blur brightness-150 saturate-150`. The
+  brightness/saturate boost is load-bearing: dark cover art dimmed under the
+  dark scrim compounds to invisible without it (measured ~RGB 6,6,5 on the
+  debut's cover before the boost). Blur is deliberately light (`blur` = 8px)
+  so the art reads as an image, not just palette — which means low-res covers
+  may show pixelation (heavy blur would mask it; check new art). `scale-110`
   hides the blur's soft edges.
-- The `bg-black/65` wrapper in BaseLayout darkens everything for text contrast.
-- Tint strength knobs (opacity/blur) live on that one div in BaseLayout.
+- The content wrapper carries the scrim, an inline horizontal gradient:
+  `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.82) 25%,
+  rgba(0,0,0,0.82) 75%, rgba(0,0,0,0.5))` — darkest (0.82) over the ~48rem
+  reading column, lighter (0.5) at the margins: text contrast where it
+  matters, art visible in the gutters.
 
 **Paint-order gotcha (caused a real bug):** the backdrop layer has negative
 z-index, and an in-flow element's own background paints *over* negative-z
@@ -80,10 +116,11 @@ Three faces, all self-hosted (Fontsource packages imported in BaseLayout, plus
 CloisterBlack.ttf via `@font-face`):
 
 - `font-display` — **Cormorant Garamond** (400/500/600): page + album titles.
-  Set mixed-case, `font-medium`, large (`text-5xl md:text-6xl`). Display face
-  only — too delicate for body text.
+  Set mixed-case, medium weight, large. Display face only — too delicate for
+  body text.
 - `font-serif` — **EB Garamond** (400/400-italic/600): all reading material —
-  `.memories` prose (1.175rem/1.8), tracklist song titles, engineering notes.
+  `.memories` prose (sized in global.css), tracklist song titles, engineering
+  notes.
 - `font-blackletter` — **Cloister Black**: "Begin" on the homepage and the
   drop cap opening each memoir. The site's signature; use sparingly, don't
   spread it.
@@ -100,9 +137,12 @@ Keep new UI in the chrome register, new content in serif.
 3. Bandcamp embed — above the memoir so people listen while they read, with a
    right-aligned "Also on Ampwall →" link beneath it (new tab, so the player
    isn't killed).
-4. The memoir (`.memories`).
-5. Engineering notes.
+4. Recording/engineering panel: free-text credits, then the lineup paragraph —
+   kept compact and centered, deliberately heading-less, to speed the reader
+   toward the memoir.
+5. The memoir (`.memories`).
 6. Prev / next chapter footer.
+7. Lyrics `<dialog>`s (one per track with lyrics; opened from the tracklist).
 
 Known trade-off: with 8+ tracks the list grows taller than the cover and the
 art floats centered with gaps. If a real record makes this ugly, options are
@@ -129,8 +169,9 @@ art floats centered with gaps. If a real record makes this ugly, options are
 
 ## Open / not yet decided
 
-- All real content: actual discography entries, memoirs, cover art, tracklists,
-  Bandcamp embeds. Only the placeholder 2008 album exists.
+- Most real content: memoirs, remaining discography entries, Bandcamp embeds.
+  The 2008 album has its real cover, tracklist, lyrics, and credits; its
+  memoir body is still template text.
 - Tablatures page — hosting format undecided (PDF/Guitar Pro/embedded viewer).
 - About page — placeholder prose.
 - `public/og.png` was generated by compositing `logo_white.png` (alpha-cropped)

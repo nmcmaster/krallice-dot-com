@@ -50,13 +50,16 @@ const ogImage = new URL('/og.png', site).toString();
       <div
         class:list={[
           'absolute inset-0 bg-cover',
-          ambient ? 'bg-center scale-110 opacity-35 blur-3xl' : 'bg-top',
+          ambient ? 'bg-center scale-110 opacity-70 blur brightness-150 saturate-150' : 'bg-top',
         ]}
         style={`background-image: url('${backdropImage}')`}
       >
       </div>
     </div>
-    <div class="min-h-screen bg-black/65">
+    <div
+      class="min-h-screen"
+      style="background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.82) 25%, rgba(0,0,0,0.82) 75%, rgba(0,0,0,0.5))"
+    >
       <Nav />
       <slot />
     </div>

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getSortedAlbums } from '../data/albums';
+import { albumSlug, getSortedAlbums } from '../data/albums';
 
 const albums = await getSortedAlbums();
 ---
@@ -17,7 +17,7 @@ const albums = await getSortedAlbums();
     <ul class="mt-12 grid grid-cols-2 gap-5 sm:grid-cols-3 md:gap-7 lg:grid-cols-4">
       {albums.map((album) => (
         <li>
-          <a href={`/albums/${album.id}`} class="group block">
+          <a href={`/albums/${albumSlug(album)}`} class="group block">
             <div class="aspect-square overflow-hidden border border-stone-800 bg-stone-950">
               {album.data.coverArt ? (
                 <img
