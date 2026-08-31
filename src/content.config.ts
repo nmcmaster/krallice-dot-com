@@ -7,6 +7,7 @@ const albums = defineCollection({
     title: z.string(),
     releaseDate: z.coerce.date(),
     coverArt: z.string().optional(),
+    backdropArt: z.string().optional(),
     tracks: z
       .array(
         z
@@ -30,6 +31,7 @@ const albums = defineCollection({
     engineering: z.string().optional(),
     lineup: z.array(z.string()).default([]),
     bandcampEmbed: z.string().optional(),
+    ampwallEmbed: z.string().optional(),
     ampwallUrl: z.string().url().optional(),
   }),
 });

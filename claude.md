@@ -61,7 +61,10 @@ public/
    separator, display formatting lives in `[slug].astro`; rendered as one
    flowing credit paragraph under the engineering text, each member kept
    unwrapped), `bandcampEmbed` (full iframe HTML),
-   `ampwallUrl` (plain URL — rendered as a link, not an embed). A `tracks`
+   `ampwallEmbed` (full iframe HTML — rendered as a collapsed click-to-expand
+   `<details>` under the Bandcamp player; the iframe sits inert in a
+   `<template>` and only mounts on first expand, so collapsed costs no load),
+   `ampwallUrl` (plain URL — fallback link form, used when no `ampwallEmbed`). A `tracks`
    entry is either a plain title string or
    `{ title, initiated?|written?, lyrics?, lyricsBy? }` — `initiated` and
    `written` are mutually exclusive credit fields shown under the title, and
@@ -73,8 +76,10 @@ public/
    comments showing every frontmatter form.
 
 **`coverArt` is a single source of truth**: it drives the album-page header art,
-the discography grid tile, AND that page's ambient backdrop. Never add a second
-art field.
+the discography grid tile, the zoom popup, AND that page's ambient backdrop.
+The one sanctioned override is optional `backdropArt`, which swaps the ambient
+backdrop only — every other surface always uses `coverArt`. Don't add further
+art fields.
 
 Chapter numbers (the roman numerals under album titles) come from position in
 `getSortedAlbums()` — nothing to set manually.
@@ -93,7 +98,8 @@ not hand-tweak it.** All values live on two divs in BaseLayout's body: the
 backdrop image div (the art's filter/opacity classes) and the content wrapper
 div (the scrim's inline gradient).
 
-- Album pages pass `backdrop={album.data.coverArt}` → "ambient" mode:
+- Album pages pass `backdrop={album.data.backdropArt ?? album.data.coverArt}`
+  → "ambient" mode:
   `bg-center scale-110 opacity-70 blur brightness-150 saturate-150`. The
   brightness/saturate boost is load-bearing: dark cover art dimmed under the
   dark scrim compounds to invisible without it (measured ~RGB 6,6,5 on the
@@ -140,9 +146,11 @@ Keep new UI in the chrome register, new content in serif.
 1. Cover art + tracklist side-by-side (`items-center`; stacks on mobile).
    Tracklist has no heading — the numbered list is self-evident.
 2. Title + chapter marker ("II · 2009", centered).
-3. Bandcamp embed — above the memoir so people listen while they read, with a
-   right-aligned "Also on Ampwall →" link beneath it (new tab, so the player
-   isn't killed).
+3. Bandcamp embed — above the memoir so people listen while they read. Beneath
+   it, right-aligned: the Ampwall expander ("Also on Ampwall +", collapsed
+   `<details>` holding the Ampwall player — keeps the page to one visible
+   player) or, without an `ampwallEmbed`, a plain "Also on Ampwall →" link
+   (new tab, so the Bandcamp player isn't killed).
 4. Recording/engineering panel: free-text credits, then the lineup paragraph —
    kept compact and centered, deliberately heading-less, to speed the reader
    toward the memoir.

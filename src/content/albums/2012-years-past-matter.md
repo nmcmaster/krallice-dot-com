@@ -4,16 +4,14 @@
 # (year stripped), so slugs must be unique across years.
 # Site order + chapter numerals come from releaseDate — nothing to set here.
 
-title: "Album Title"
-releaseDate: 2008-07-11
+title: "Years Past Matter"
+releaseDate: 2012-08-25
 # Drop the cover into public/albums/ first. One field drives the header art,
 # the discography tile, the zoom popup, AND the page's ambient backdrop.
 # Export ~1600×1600 WebP or JPEG (q75–80), aiming under ~500 KB — files in
 # public/ ship as-is, no build-time optimization:
-coverArt: "/albums/<year>-<slug>.jpg"
-# Optional: use a different image for this page's ambient backdrop only
-# (header art, discography tile, and zoom popup still use coverArt):
-# backdropArt: "/albums/<year>-<slug>-backdrop.jpg"
+coverArt: "/albums/2012-years-past-matter.webp"
+# backdropArt: "/albums/2012-years-past-matter-background.jpg"
 
 # A track is a plain title string, or a mapping for extra data.
 # Gotchas: once a track has any extra field it needs `title:` on the dash
@@ -34,16 +32,16 @@ tracks:
 # Free text, rendered whitespace-as-typed: line breaks and multiple spaces
 # are kept, a blank line starts a new paragraph. Recording info + assorted
 # credits (artwork, logo, etc). Double space between sentences to taste.
-engineering: |
-    recorded, mixed, mastered at Studio by Person in month year.  Artwork by Person.  Logo by Person.
+# engineering: |
+#     recorded, mixed, mastered at Studio by Person in month year.  Artwork by Person.  Logo by Person.
 
 # One entry per member, "Name | instruments".
 # The pipe is the parse separator; display formatting lives in [slug].astro.
 lineup:
-    - "Mick Barr | guitar, bass, voice"
+    - "Mick Barr | guitar, vocals"
 
 # Paste the full Bandcamp embed snippet to light up the player:
-# bandcampEmbed: '<iframe style="border:0;width:100%;height:472px;" src="https://bandcamp.com/EmbeddedPlayer/album=XXXXXXXXX/size=large/..." seamless></iframe>'
+bandcampEmbed: '<iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=4027888967/size=large/bgcol=333333/linkcol=ffffff/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://krallice.bandcamp.com/album/years-past-matter">Years Past Matter by Krallice</a></iframe>'
 # Ampwall: paste the full embed snippet for a click-to-expand player below
 # the Bandcamp one (collapsed by default; loads nothing until expanded).
 # ampwallEmbed: '<iframe src="https://ampwall.com/..." ...></iframe>'

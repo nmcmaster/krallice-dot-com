@@ -45,14 +45,16 @@ const dev = import.meta.env.DEV;
 <BaseLayout
   title={`Krallice — ${album.data.title}`}
   description={`Krallice — ${album.data.title} (${year}).`}
-  backdrop={album.data.coverArt}
+  backdrop={album.data.backdropArt ?? album.data.coverArt}
 >
   <main class="mx-auto max-w-3xl px-6 py-10 md:py-14">
     <header>
       <div class="flex flex-col items-center gap-8 md:flex-row md:gap-10">
         <div class="aspect-square w-full max-w-xs shrink-0 overflow-hidden border border-stone-800 bg-stone-950 shadow-[0_0_40px_rgba(0,0,0,0.6)] md:max-w-sm">
           {album.data.coverArt ? (
-            <img src={album.data.coverArt} alt={album.data.title} class="h-full w-full object-cover" />
+            <button type="button" data-cover-open class="block h-full w-full cursor-zoom-in">
+              <img src={album.data.coverArt} alt={album.data.title} class="h-full w-full object-cover" />
+            </button>
           ) : (
             <div class="flex h-full w-full items-center justify-center p-4 text-center font-display text-stone-400">
               {album.data.title}
@@ -100,7 +102,7 @@ const dev = import.meta.env.DEV;
           {toRoman(chapter)} ·{' '}
           <span class="group relative cursor-pointer">
             {year}
-            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap border border-stone-700 bg-stone-950 px-3 py-1.5 text-[0.8rem] normal-case tracking-[0.2em] text-stone-300 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <span class="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap border border-stone-700 bg-stone-950 px-3 py-1.5 text-[0.8rem] normal-case tracking-[0.2em] text-stone-300 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
               {fullDate}
             </span>
           </span>
@@ -117,23 +119,37 @@ const dev = import.meta.env.DEV;
             Add bandcampEmbed in frontmatter
           </div>
         )}
-        {(album.data.ampwallUrl || dev) && (
-          <p class="mt-2 text-right">
-            {album.data.ampwallUrl ? (
-              <a
-                href={album.data.ampwallUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-[0.7rem] uppercase tracking-[0.25em] text-stone-500 transition-colors hover:text-stone-200"
-              >
-                Also on Ampwall →
-              </a>
+        {(album.data.ampwallEmbed || album.data.ampwallUrl || dev) && (
+          <div class="mt-2">
+            {album.data.ampwallEmbed ? (
+              <details data-ampwall class="group">
+                <summary class="block cursor-pointer list-none text-right text-[0.7rem] uppercase tracking-[0.25em] text-stone-500 transition-colors select-none hover:text-stone-200 [&::-webkit-details-marker]:hidden">
+                  Also on Ampwall <span class="group-open:hidden">+</span><span class="hidden group-open:inline">−</span>
+                </summary>
+                {/* embed HTML stays inert inside <template> until first expand,
+                    so the collapsed player loads nothing */}
+                <template set:html={album.data.ampwallEmbed}></template>
+                <div class="embed mt-3" data-ampwall-mount></div>
+              </details>
+            ) : album.data.ampwallUrl ? (
+              <p class="text-right">
+                <a
+                  href={album.data.ampwallUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[0.7rem] uppercase tracking-[0.25em] text-stone-500 transition-colors hover:text-stone-200"
+                >
+                  Also on Ampwall →
+                </a>
+              </p>
             ) : (
-              <span class="text-[0.7rem] uppercase tracking-[0.25em] text-stone-700">
-                Add ampwallUrl in frontmatter
-              </span>
+              <p class="text-right">
+                <span class="text-[0.7rem] uppercase tracking-[0.25em] text-stone-700">
+                  Add ampwallEmbed or ampwallUrl in frontmatter
+                </span>
+              </p>
             )}
-          </p>
+          </div>
         )}
       </section>
     )}
@@ -201,7 +217,7 @@ const dev = import.meta.env.DEV;
       ) : (
         <a
           href="/discography"
-          class="group block border border-stone-700 bg-black/30 p-5 text-right transition-colors hover:border-stone-400"
+          class="group block border border-stone-700 bg-black/30 px-5 pt-2 pb-4 text-right transition-colors hover:border-stone-400"
         >
           <span class="text-[0.65rem] uppercase tracking-[0.3em] text-stone-500">The end — for now</span>
           <span class="mt-1 block font-display text-xl text-stone-100">
@@ -210,6 +226,21 @@ const dev = import.meta.env.DEV;
         </a>
       )}
     </nav>
+
+    {album.data.coverArt && (
+      <dialog
+        id="cover-zoom"
+        class="m-auto w-fit max-w-none border border-stone-700 bg-stone-950 p-0 shadow-[0_0_60px_rgba(0,0,0,0.8)] backdrop:bg-black/70"
+      >
+        {/* max-only constraints: the image caps at the viewport but never
+            upscales past its natural size, so low-res covers stay unpixelated */}
+        <img
+          src={album.data.coverArt}
+          alt={album.data.title}
+          class="block max-h-[85vh] max-w-[90vw] cursor-zoom-out"
+        />
+      </dialog>
+    )}
 
     {album.data.tracks.map(
       (t, i) =>
@@ -256,6 +287,25 @@ const dev = import.meta.env.DEV;
       // whose target is the dialog itself can only be on the ::backdrop
       dialog.addEventListener('click', (e) => {
         if (e.target === dialog) dialog.close();
+      });
+    });
+
+    const coverDialog = document.getElementById('cover-zoom');
+    if (coverDialog instanceof HTMLDialogElement) {
+      document
+        .querySelector('[data-cover-open]')
+        ?.addEventListener('click', () => coverDialog.showModal());
+      // any click — image or backdrop — closes the zoom
+      coverDialog.addEventListener('click', () => coverDialog.close());
+    }
+
+    document.querySelectorAll<HTMLDetailsElement>('details[data-ampwall]').forEach((details) => {
+      details.addEventListener('toggle', () => {
+        const tpl = details.querySelector('template');
+        const mount = details.querySelector('[data-ampwall-mount]');
+        if (details.open && tpl && mount && !mount.hasChildNodes()) {
+          mount.appendChild(tpl.content.cloneNode(true));
+        }
       });
     });
   </script>

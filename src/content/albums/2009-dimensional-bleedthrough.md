@@ -1,7 +1,7 @@
 ---
 title: "Dimensional Bleedthrough"
 releaseDate: 2009-11-10 # PLACEHOLDER — verify the real release date
-coverArt: "/albums/2009-dimensional-bleedthrough.jpg" # PLACEHOLDER art — drop the real cover into public/albums/ and point this at it. Used for the header art, the discography grid, AND the page's blurred ambient backdrop.
+coverArt: "/albums/2009-dimensional-bleedthrough.webp" # PLACEHOLDER art — drop the real cover into public/albums/ and point this at it. Used for the header art, the discography grid, AND the page's blurred ambient backdrop.
 tracks:
     # A track is either a plain title string, or an object with optional
     # `initiated` OR `written` (credit under the title — the label matches
@@ -107,14 +107,15 @@ tracks:
       initiated: "Marston"
 
 engineering: |
-    recorded, mixed, mastered at Menegroth, the Thousand Caves by Colin Marston 6th and 7th month 2009.  Artwork by McMaster.
-lineup: Colin Marston | guitar
-    Mick Barr | guitar, v
-    Nick McMaster | bass, v
-    Lev Weinstein | drums
+    recorded, mixed, mastered at Menegroth, the Thousand Caves by Colin Marston 6th and 7th month 2009.  Artwork by McMaster.  Alternate 1st edition vinyl artwork by Karlynn Holland.
+lineup:
+    - "Colin Marston | guitar"
+    - "Mick Barr | guitar, v"
+    - "Nick McMaster | bass, v"
+    - "Lev Weinstein | drums"
 
 # Paste the real Bandcamp embed snippet to light up the player (sits above the memoir):
-# bandcampEmbed: '<iframe style="border:0;width:100%;height:472px;" src="https://bandcamp.com/EmbeddedPlayer/album=XXXXXXXXX/size=large/..." seamless></iframe>'
+bandcampEmbed: '<iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=1000423785/size=large/bgcol=333333/linkcol=ffffff/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://krallice.bandcamp.com/album/dimensional-bleedthrough">Dimensional Bleedthrough by Krallice</a></iframe>'
 # Ampwall is just a link below the player, not an embed:
 # ampwallUrl: "https://ampwall.com/a/krallice"
 ---

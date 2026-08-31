@@ -4,16 +4,13 @@
 # (year stripped), so slugs must be unique across years.
 # Site order + chapter numerals come from releaseDate — nothing to set here.
 
-title: "Album Title"
-releaseDate: 2008-07-11
+title: "Orphan of Sickness"
+releaseDate: 2011-07-21
 # Drop the cover into public/albums/ first. One field drives the header art,
 # the discography tile, the zoom popup, AND the page's ambient backdrop.
 # Export ~1600×1600 WebP or JPEG (q75–80), aiming under ~500 KB — files in
 # public/ ship as-is, no build-time optimization:
-coverArt: "/albums/<year>-<slug>.jpg"
-# Optional: use a different image for this page's ambient backdrop only
-# (header art, discography tile, and zoom popup still use coverArt):
-# backdropArt: "/albums/<year>-<slug>-backdrop.jpg"
+coverArt: "/albums/2011-orphan-of-sickness.jpg"
 
 # A track is a plain title string, or a mapping for extra data.
 # Gotchas: once a track has any extra field it needs `title:` on the dash
@@ -21,29 +18,37 @@ coverArt: "/albums/<year>-<slug>.jpg"
 # Lyric lines must all be indented deeper than `lyrics:` itself (pasting
 # strips indentation — select the pasted lines and indent them together).
 tracks:
-    - title: "First Song"
-      initiated: "Barr" # or `written:` — never both; the label matches the field
-      lyricsBy: "Barr" # credit shown inside the lyrics popup
-      lyrics: |
-          line breaks are kept
-          a blank line starts a new stanza
-    - title: "Second Song"
-      written: "McMaster"
-    - "Third Song (no credits or lyrics — plain string is fine)"
+    - title: "BBH"
+      written: "Brown/Majewski" # or `written:` — never both; the label matches the field
+
+    - title: "Fetus in Fetu"
+      written: "Brown/Majewski"
+
+    - title: "Boat Driver"
+      written: "Brown/Majewski"
+
+    - title: "Traditional"
+      written: "Rorschach"
+
+    - title: "Trippin Balls Intro"
+      written: "Jasta 14"
 
 # Free text, rendered whitespace-as-typed: line breaks and multiple spaces
 # are kept, a blank line starts a new paragraph. Recording info + assorted
 # credits (artwork, logo, etc). Double space between sentences to taste.
 engineering: |
-    recorded, mixed, mastered at Studio by Person in month year.  Artwork by Person.  Logo by Person.
+    tracks 1-3 in tribute to Brendan Majewski, RIP.  track 5 in tribute to TZ and Budzy, RIP
 
 # One entry per member, "Name | instruments".
 # The pipe is the parse separator; display formatting lives in [slug].astro.
 lineup:
-    - "Mick Barr | guitar, bass, voice"
+    - "Mick Barr | guitar, vocals"
+    - "Colin Marston | Guitar"
+    - "Nick McMaster | Bass"
+    - "Lev Weinstein | Drums"
 
 # Paste the full Bandcamp embed snippet to light up the player:
-# bandcampEmbed: '<iframe style="border:0;width:100%;height:472px;" src="https://bandcamp.com/EmbeddedPlayer/album=XXXXXXXXX/size=large/..." seamless></iframe>'
+bandcampEmbed: '<iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=3719279702/size=large/bgcol=333333/linkcol=ffffff/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://krallice.bandcamp.com/album/orphan-of-sickness">Orphan of Sickness by Krallice</a></iframe>'
 # Ampwall: paste the full embed snippet for a click-to-expand player below
 # the Bandcamp one (collapsed by default; loads nothing until expanded).
 # ampwallEmbed: '<iframe src="https://ampwall.com/..." ...></iframe>'

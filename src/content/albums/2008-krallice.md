@@ -1,7 +1,7 @@
 ---
 title: "Krallice"
 releaseDate: 2008-07-11 # PLACEHOLDER — verify the real release date
-coverArt: "/albums/2008-krallice.jpg" # PLACEHOLDER art — drop the real cover into public/albums/ and point this at it. Used for the header art, the discography grid, AND the page's blurred ambient backdrop.
+coverArt: "/albums/2008-krallice.jpg"
 tracks:
     # A track is either a plain title string, or an object with optional
     # `initiated` OR `written` (credit under the title — the label matches
@@ -104,7 +104,7 @@ tracks:
       initiated: "Marston"
       lyricsBy: "Barr"
       lyrics: |
-          better left by fates angelic crusades
+          better left by fate's angelic crusades
           accompany lashings with tears
           the glory of gods and their jealousy
           to raise the whip in divine interest
@@ -134,7 +134,7 @@ lineup:
     - "Nick McMaster | guest vocal"
 
 # Paste the real Bandcamp embed snippet to light up the player (sits above the memoir):
-# bandcampEmbed: '<iframe style="border:0;width:100%;height:472px;" src="https://bandcamp.com/EmbeddedPlayer/album=XXXXXXXXX/size=large/..." seamless></iframe>'
+bandcampEmbed: '<iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=1385167995/size=large/bgcol=333333/linkcol=ffffff/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://krallice.bandcamp.com/album/krallice">Krallice by Krallice</a></iframe>'
 # Ampwall is just a link below the player, not an embed:
 # ampwallUrl: "https://ampwall.com/a/krallice"
 ---
