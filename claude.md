@@ -53,7 +53,9 @@ public/
    keeps files chronologically sorted on disk — URLs drop it via
    `albumSlug()` in `data/albums.ts` (`/albums/<slug>`), so slugs must be
    unique across years. Frontmatter schema
-   (`src/content.config.ts`): `title`, `releaseDate`, `coverArt`, `tracks[]`,
+   (`src/content.config.ts`): `title`, `releaseDate`, `orderingDate` (optional —
+   overrides `releaseDate` in `getSortedAlbums()` for site order and chapter
+   numerals; never displayed), `coverArt`, `tracks[]`,
    `engineering` (free-text string rendered whitespace-as-typed: line breaks
    and multiple spaces are kept, blank lines split paragraphs — holds
    recording info and assorted credits),

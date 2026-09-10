@@ -2,10 +2,14 @@
 # ── Copy this file to src/content/albums/<year>-<slug>.md ──────────────────
 # The <year>- prefix only sorts files on disk; the URL becomes /albums/<slug>
 # (year stripped), so slugs must be unique across years.
-# Site order + chapter numerals come from releaseDate — nothing to set here.
+# Site order + chapter numerals come from releaseDate (or orderingDate,
+# if set) — nothing to set here.
 
 title: "Album Title"
 releaseDate: 2008-07-11
+# Optional: overrides releaseDate for site order + chapter numerals only —
+# never displayed (e.g. to slot a re-recording where it belongs in the story):
+# orderingDate: 2008-07-12
 # Drop the cover into public/albums/ first. One field drives the header art,
 # the discography tile, the zoom popup, AND the page's ambient backdrop.
 # Export ~1600×1600 WebP or JPEG (q75–80), aiming under ~500 KB — files in

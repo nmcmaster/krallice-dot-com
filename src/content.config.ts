@@ -6,6 +6,7 @@ const albums = defineCollection({
   schema: z.object({
     title: z.string(),
     releaseDate: z.coerce.date(),
+    orderingDate: z.coerce.date().optional(),
     coverArt: z.string().optional(),
     backdropArt: z.string().optional(),
     tracks: z

@@ -6,10 +6,11 @@ export function albumSlug(album: { id: string }): string {
   return album.id.replace(/^\d{4}-/, '');
 }
 
-/** All albums, oldest first — the canonical chronological order for the site. */
+/** All albums, oldest first — the canonical chronological order for the site.
+    `orderingDate` (never displayed) overrides `releaseDate` for sorting. */
 export async function getSortedAlbums() {
   const albums = await getCollection('albums');
-  return albums.sort(
-    (a, b) => a.data.releaseDate.valueOf() - b.data.releaseDate.valueOf(),
-  );
+  const sortKey = (a: (typeof albums)[number]) =>
+    (a.data.orderingDate ?? a.data.releaseDate).valueOf();
+  return albums.sort((a, b) => sortKey(a) - sortKey(b));
 }
