@@ -31,7 +31,16 @@ html {
     font-size: 1.175rem;
 }
 .memories > * + * {
-    margin-top: 1.4em;
+    margin-top: 1em;
+}
+/* Book-style paragraph indents: only a paragraph that directly follows
+   another paragraph is indented, so openers — including the first paragraph
+   after a heading or pull-quote — stay flush, matching print convention. */
+.memories p + p {
+    text-indent: 1.1em;
+    /* pulled tight against the 1.4em block default: indent + near-zero gap
+       is what makes prose read as a continuous page instead of blocks */
+    margin-top: 0.35em;
 }
 .memories h2,
 .memories h3 {
@@ -42,7 +51,9 @@ html {
 }
 .memories h2 {
     font-size: 1.9rem;
-    margin-top: 2.2em;
+    text-align: center;
+    margin-left: -0.1em;
+    /* margin-top: 2.2em; */
 }
 .memories h3 {
     font-size: 1.45rem;
@@ -61,7 +72,7 @@ html {
     border-left: 2px solid #44403c;
     padding-left: 1.25rem;
     font-style: italic;
-    color: #a8a29e;
+    color: #c1b9b4;
 }
 .memories em {
     font-style: italic;
