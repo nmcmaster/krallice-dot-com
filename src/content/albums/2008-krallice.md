@@ -137,6 +137,9 @@ lineup:
 bandcampEmbed: '<iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=1385167995/size=large/bgcol=333333/linkcol=ffffff/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://krallice.bandcamp.com/album/krallice">Krallice by Krallice</a></iframe>'
 # Ampwall is just a link below the player, not an embed:
 # ampwallUrl: "https://ampwall.com/a/krallice"
+italicize: ["Nattens Madrigal", "Dead as Dreams"]
+# Signature under the memoir, right-aligned; the em dash is added on render:
+byline: "NM"
 ---
 
 <!-- PLACEHOLDER: this is the heart of the page — your personal memories of the album.
@@ -154,7 +157,7 @@ I felt the same way. I hired Colin to record and play bass & noise on a song for
 
 During one of those sessions Colin played something else he had recorded: a powerful and puzzling single-song album called OV by a duo named Orthrelm. It used the pyrotechnic vocabulary of '80s shredder guitar solos and drum fills that were usually accents in heavy rock as the base elements of the composition. It felt informed by modern classical, free jazz, and folk or classical musics from African and Asian areas without coming across as pretentious or scholarly. Later, in 2006, I would see Mick and drummer Josh [name] perform OV in its entirely at the Beat Kitchen in Chicago. I later found out it was the last show of that tour; the physicality of the piece had caused repetitive stress injuries to his arm and they'd had to cancel the remaining dates.
 
-Lev moved back to New York several months before I did. He was casting a wide net for bands and session drumming gigs in the city, and so it wasn't surprising to hear that Colin and Mick had asked him to play on an album they were working on together. Colin had produced Mick's music, and Orthrelm & Behold had done a split release together, but they'd never actually worked on music before. The broad goal as I understood it was to channel a mutual interest in black metal, with particular reference to Ulver's Nattens Madrigal-- notable for its constant three-part polyphony between the two guitars and bass [add footnote]-- and Weakling's Dead as Dreams.
+Lev moved back to New York several months before I did. He was casting a wide net for bands and session drumming gigs in the city, and so it wasn't surprising to hear that Colin and Mick had asked him to play on an album they were working on together. Colin had produced Mick's music, and Orthrelm & Behold had done a split release together, but they'd never actually worked on music before. The broad goal as I understood it was to channel a mutual interest in black metal, with particular reference to Ulver's Nattens Madrigal-- notable for its constant three-part polyphony between the two guitars and bass [add footnote]-- and Dead as Dreams by Weakling.
 
 > The album was just supposed to be a one-off; Lev was initially hired as a session drummer.
 
@@ -171,5 +174,3 @@ I've seen the assumption in reviews and interviews that the recordings are const
 Colin wrote and recorded the bass for all songs except "Energy Chasms" and a part or two of "Cnestorial", which were played by Mick. Their bass styles are recognizably different in a way that's hard to articulate; the bass on "Energy Chasms" in particular has a strummy quality I don't associate with Colin. Some of the Colin bass has features that are recognizable from the style of bass playing he does in Dysrhythmia. It might be because I've had to relearn this part for recent gigs, but I think the bassline for "Forgiveness in Rot" deserves special mention for its use of register and balance between strange and conventional harmonic choices. In a live performance, that song can sound pretty different depending on the balance of instruments one has from their position in the room and thus which notes of the overall "chord" between the three instruments prevail.
 
 The first Krallice show was April 10, 2008 at the Luna Lounge in Williamsburg.
-
--NM

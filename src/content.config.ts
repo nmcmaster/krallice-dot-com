@@ -30,6 +30,8 @@ const albums = defineCollection({
       )
       .default([]),
     engineering: z.string().optional(),
+    italicize: z.array(z.string()).default([]),
+    byline: z.string().optional(),
     lineup: z.array(z.string()).default([]),
     bandcampEmbed: z.string().optional(),
     ampwallEmbed: z.string().optional(),

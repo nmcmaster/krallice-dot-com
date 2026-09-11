@@ -35,6 +35,15 @@ tracks:
       written: "McMaster"
     - "Third Song (no credits or lyrics — plain string is fine)"
 
+# Optional: signature under the memoir, right-aligned, italic; the em dash
+# is added on render ("— NM"):
+# byline: "NM"
+
+# Optional: phrases (album titles, typically) to auto-italicize wherever
+# they appear in this entry's memoir body — exact, case-sensitive matches,
+# so you never hand-mark them with asterisks:
+# italicize: ["Dimensional Bleedthrough", "Ygg Huur"]
+
 # Free text, rendered whitespace-as-typed: line breaks and multiple spaces
 # are kept, a blank line starts a new paragraph. Recording info + assorted
 # credits (artwork, logo, etc). Double space between sentences to taste.

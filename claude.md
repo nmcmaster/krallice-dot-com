@@ -73,7 +73,14 @@ public/
    the label matches whichever is used ("initiated" is the band's term for
    the collaborative process; "written" for the conventional case). `lyrics`
    (multiline string) gets a Lyrics link opening a native `<dialog>` popup;
-   `lyricsBy` is the lyrics credit shown in that popup's header.
+   `lyricsBy` is the lyrics credit shown in that popup's header. `italicize`
+   (list of strings) auto-wraps exact, word-bounded occurrences of each
+   phrase in `<em>` in that entry's memoir body — implemented by
+   `src/plugins/rehype-italicize.mjs`, registered in `astro.config.mjs`
+   (which required installing `@astrojs/markdown-remark`: Astro 6's default
+   Markdown processor doesn't run rehype plugins). `byline` (string, e.g.
+   "NM") renders right-aligned in italic serif after the memoir, with an em
+   dash prefixed at render time.
 3. Write the memoir in the markdown body. `2008-krallice.md` has annotated
    comments showing every frontmatter form.
 
